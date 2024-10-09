@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mining App with Percentage Upgrade</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .nav-bar a {
+            text-decoration: none;
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .nav-bar a:hover {
+            color: #000;
+        }
+
+        .icon {
+            font-size: 24px;
+        }
+
+        .page {
+            margin-bottom: 80px; /* To keep content above the nav-bar */
+        }
+
+        .button {
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button:disabled {
+            background-color: #ccc;
+        }
+
+          .section {
+            background-color: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .upgrade-section {
+            margin-top: 20px;
+        }
+
+        .upgrade-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Home Page -->
+        <div class="page" id="home">
+            <div class="section">
+                <h2>Mining</h2>
+                <p>Time remaining: <span id="timer">0:20</span></p>
+                <button class="button" id="claimBtn" disabled>Claim</button>
+                <p>Current Points: <span id="points">0.00</span></p>
+              
+            </div>
+
+            <div class="section">
+                <h2>Yield</h2>
+                <p>Time remaining: <span id="percentageTimer">0:05</span></p>
+                <button class="button" id="percentageClaimBtn" disabled>Claim Bonus</button>
+                <p>Bonus Percentage: <strong id="bonusPercentage">0%</strong></p>
+            </div>
+
+            <div class="section upgrade-section">
+                <h2>Upgrade</h2>
+                <!-- Existing Upgrade: Points per Claim -->
+                <p>Current Points per Claim: <strong id="pointsPerClaim">0.05</strong></p>
+                <button class="button" id="upgradeBtn" disabled>Upgrade Points (Cost: <span id="upgradeCost">0.10</span> points)</button>
+                <p class="upgrade-info">Each upgrade increases your points per claim. The cost increases after each upgrade.</p>
+
+                <!-- New Upgrade: Percentage Boost -->
+                <p>Current Bonus Percentage: <strong id="bonusPercentageUpgrade">0%</strong></p>
+                <button class="button" id="upgradePercentageBtn" disabled>Upgrade Percentage (Cost: <span id="percentageCost">0.50</span> points)</button>
+                <p class="upgrade-info">Upgrade to increase your bonus percentage. Each upgrade adds 1% to your total points per claim, with increasing cost.</p>
+            </div>
+        </div>
+    
+    
+    
+    <div class="page" id="invite">
+            <div class="section">
+                <h2>Invite Friends</h2>
+                <p>Share your invite link:</p>
+           <input type="text" value="https://yourapp.com/invite?code=12345" readonly />
+                <button class="button">Copy Invite Link</button>
+           </div> 
+
+            <div class="section">
+                <h2>Added Friends</h2>
+                <ul>
+                    <li>Friend 1</li>
+            
+                    <li>Friend 2</li>
+                </ul>
+            </div>
+        </div>
+        
+        </div>
+        <div class="container">
+        <!-- Home Page -->
+        <div class="page" id="earn">
+            <!-- Existing Sections... -->
+            <!-- Task Section -->
+            <div class="section task-section">
+                <h2>Complete Tasks</h2>
+                <div class="task">
+                    <p>Follow our Instagram <a href="https://instagram.com" target="_blank">Instagram Page</a></p>
+                    <button class="button" id="instagramTaskBtn">Complete Task</button>
+                    <p>Points: +2 points (after 10 mins)</p>
+                </div>
+                <div class="task">
+                    <p>Follow our Facebook Page <a href="https://facebook.com" target="_blank">Facebook Page</a></p>
+                    <button class="button" id="facebookTaskBtn">Complete Task</button>
+                    <p>Points: +3 points (after 10 mins)</p>
+                </div>
+                <p>Task will be marked as complete and points added after 10 minutes.</p>
+            </div>
+        </div>
+    </div>
+   <!-- Wallet Page -->
+
+
+<div class="container">
+<div class="page" id="wallet">
+    <div class="section">
+        <h2>Wallet</h2>
+        <p>Current Points: <span id="wallet-points">0.00</span></p>
+
+        <div class="withdraw-section">
+            
+            <input type="number" id="withdraw-amount" min="1" placeholder="Enter points to withdraw" />
+            <button class="button" id="withdraw-btn">Withdraw</button>
+        </div>
+
+        <p id="status-message"></p> <!-- To show withdrawal success or error messages -->
+    </div>
+</div>
+  </div>   
+    
+
+    
+    <!-- Bottom Navigation Bar -->
+    <div class="nav-bar">
+        <a href="#home"><div class="icon">🏠</div>Home</a>
+        <a href="#earn"><div class="icon">💼</div>Earn</a>
+        <a href="#invite"><div class="icon">👥</div>Invite</a>
+        <a href="#wallet"><div class="icon">💰</div>Wallet</a>
+    </div>
+    
+    
+<script>
+    let points = 0.00;
+    let pointsPerClaim = 0.05;
+    let upgradeCost = 0.10;
+    let percentageCost = 0.50;
+    let bonusPercentage = 0;
+    let claimTime = 3; // 60 minutes
+    let percentageClaimTime = 60; // 24 hours
+    let timerInterval, percentageTimerInterval;
+    let canClaim = false, canClaimPercentage = false;
+
+    const pointsDisplay = document.getElementById('points');
+    const pointsPerClaimDisplay = document.getElementById('pointsPerClaim');
+    const upgradeBtn = document.getElementById('upgradeBtn');
+    const upgradeCostDisplay = document.getElementById('upgradeCost');
+    const claimBtn = document.getElementById('claimBtn');
+    const timerDisplay = document.getElementById('timer');
+    const upgradePercentageBtn = document.getElementById('upgradePercentageBtn');
+    const bonusPercentageDisplay = document.getElementById('bonusPercentage');
+    const percentageClaimBtn = document.getElementById('percentageClaimBtn');
+    const percentageTimerDisplay = document.getElementById('percentageTimer');
+    const bonusPercentageUpgradeDisplay = document.getElementById('bonusPercentageUpgrade');
+    const percentageCostDisplay = document.getElementById('percentageCost');
+const instagramTaskBtn = document.getElementById('instagramTaskBtn');
+        const facebookTaskBtn = document.getElementById('facebookTaskBtn');
+
+        function startTaskTimer(taskPoints, button, delay = 600) { // 10 minutes timer
+            button.disabled = true;
+            setTimeout(() => {
+                points += taskPoints;
+                pointsDisplay.textContent = points.toFixed(2);
+                alert(`You earned ${taskPoints} points!`);
+                button.disabled = false; // Enable the button again after completion
+            }, delay * 1000); // Delay is in seconds, 600 seconds = 10 mins
+        }
+
+        instagramTaskBtn.addEventListener('click', () => {
+            startTaskTimer(2, instagramTaskBtn); // 2 points for Instagram task
+            window.open("https://instagram.com", "_blank"); // Open Instagram
+        });
+
+        facebookTaskBtn.addEventListener('click', () => {
+            startTaskTimer(3, facebookTaskBtn); // 3 points for Facebook task
+            window.open("https://facebook.com", "_blank"); // Open Facebook
+        });
+    function startTimer() {
+        let timeLeft = claimTime;
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        timerInterval = setInterval(() => {
+            timeLeft--;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                claimBtn.disabled = false;
+                canClaim = true;
+            }
+
+            minutes = Math.floor(timeLeft / 60);
+            seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }, 1000);
+    }
+
+    function startPercentageTimer() {
+        let percentageTimeLeft = percentageClaimTime;
+        let hours = Math.floor(percentageTimeLeft / 3600);
+        let minutes = Math.floor((percentageTimeLeft % 3600) / 60);
+        let seconds = percentageTimeLeft % 60;
+        percentageTimerDisplay.textContent = `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        percentageTimerInterval = setInterval(() => {
+            percentageTimeLeft--;
+
+            if (percentageTimeLeft <= 0) {
+                clearInterval(percentageTimerInterval);
+                percentageClaimBtn.disabled = false;
+                canClaimPercentage = true;
+            }
+
+            hours = Math.floor(percentageTimeLeft / 3600);
+            minutes = Math.floor((percentageTimeLeft % 3600) / 60);
+            seconds = percentageTimeLeft % 60;
+            percentageTimerDisplay.textContent = `${hours}:${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }, 1000);
+    }
+
+    function claimPoints() {
+        if (!canClaim) return;
+
+        const totalPoints = pointsPerClaim + (pointsPerClaim * (bonusPercentage / 100));
+        points += totalPoints;
+        pointsDisplay.textContent = points.toFixed(2);
+
+        claimBtn.disabled = true;
+        canClaim = false;
+        startTimer();
+
+        checkUpgradeAvailability();
+    }
+
+    function claimBonusPoints() {
+        if (!canClaimPercentage) return;
+
+        const bonusPoints = points * (bonusPercentage / 100);
+        points += bonusPoints;
+        pointsDisplay.textContent = points.toFixed(2);
+
+        percentageClaimBtn.disabled = true;
+        canClaimPercentage = false;
+        startPercentageTimer();
+
+        checkUpgradeAvailability();
+    }
+
+    function upgradePoints() {
+        if (points >= upgradeCost) {
+            points -= upgradeCost;
+            pointsPerClaim += 0.50;
+            upgradeCost += 0.2;
+
+            pointsDisplay.textContent = points.toFixed(2);
+            pointsPerClaimDisplay.textContent = pointsPerClaim.toFixed(2);
+            upgradeCostDisplay.textContent = upgradeCost.toFixed(2);
+
+            checkUpgradeAvailability();
+        }
+    }
+
+    function upgradePercentage() {
+        if (points >= percentageCost) {
+            points -= percentageCost;
+            bonusPercentage += 1;
+            percentageCost += 0.60;
+
+            pointsDisplay.textContent = points.toFixed(2);
+            bonusPercentageDisplay.textContent = `${bonusPercentage}%`;
+            bonusPercentageUpgradeDisplay.textContent = `${bonusPercentage}%`;
+            percentageCostDisplay.textContent = percentageCost.toFixed(2);
+
+            checkUpgradeAvailability();
+        }
+    }
+
+    function checkUpgradeAvailability() {
+        upgradeBtn.disabled = points < upgradeCost;
+        upgradePercentageBtn.disabled = points < percentageCost;
+    }
+
+    claimBtn.addEventListener('click', claimPoints);
+    percentageClaimBtn.addEventListener('click', claimBonusPoints);
+    upgradeBtn.addEventListener('click', upgradePoints);
+    upgradePercentageBtn.addEventListener('click', upgradePercentage);
+
+
+
+
+
+// Existing function updates
+function claimPoints() {
+    if (!canClaim) return;
+
+    const totalPoints = pointsPerClaim + (pointsPerClaim * (bonusPercentage / 100));
+    points += totalPoints;
+    pointsDisplay.textContent = points.toFixed(2);
+    updateWalletDisplay(); // Ensure wallet points display is updated
+
+    claimBtn.disabled = true;
+    canClaim = false;
+    startTimer();
+
+    checkUpgradeAvailability();
+}
+
+function claimBonusPoints() {
+    if (!canClaimPercentage) return;
+
+    const bonusPoints = points * (bonusPercentage / 100);
+    points += bonusPoints;
+    pointsDisplay.textContent = points.toFixed(2);
+    updateWalletDisplay(); // Ensure wallet points display is updated
+
+    percentageClaimBtn.disabled = true;
+    canClaimPercentage = false;
+    startPercentageTimer();
+
+    checkUpgradeAvailability();
+}
+
+// Adding wallet points display
+const walletPointsDisplay = document.getElementById('wallet-points');
+const withdrawAmountInput = document.getElementById('withdraw-amount');
+const withdrawBtn = document.getElementById('withdraw-btn');
+const statusMessage = document.getElementById('status-message');
+
+// Function to update the wallet points display
+function updateWalletDisplay() {
+    walletPointsDisplay.textContent = points.toFixed(2);
+}
+
+// Update wallet points display initially
+updateWalletDisplay();
+
+// Handle withdraw button click
+withdrawBtn.addEventListener('click', function() {
+    const withdrawAmount = parseFloat(withdrawAmountInput.value);
+
+    if (withdrawAmount < 5) {
+        statusMessage.textContent = 'Minimum withdrawal amount is 5 points.';
+    } else if (withdrawAmount > points) {
+        statusMessage.textContent = 'Insufficient points.';
+    } else {
+        points -= withdrawAmount;
+        updateWalletDisplay(); // Update wallet points display
+        pointsDisplay.textContent = points.toFixed(2); // Update the points display elsewhere if needed
+        statusMessage.textContent = `Successfully withdrew ${withdrawAmount.toFixed(2)} points.`;
+    }
+});
+    startTimer();
+    startPercentageTimer();
+</script>
+    
+
+</body>
+</html>
